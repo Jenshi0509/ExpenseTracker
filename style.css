@@ -1,0 +1,140 @@
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', sans-serif;
+}
+
+html, body {
+width: 100%;
+min-height: 100vh;
+}
+
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 20px;
+background: linear-gradient(-45deg,#0f172a,#1e3a8a,#0f766e,#4f46e5);
+background-size: 400% 400%;
+animation: bg 12s ease infinite;
+overflow-x: hidden;
+}
+
+@keyframes bg {
+0% {background-position:0% 50%;}
+50% {background-position:100% 50%;}
+100% {background-position:0% 50%;}
+}
+
+/* MAIN CARD */
+.weather-card {
+width: 100%;
+max-width: 450px;
+padding: 30px;
+border-radius: 25px;
+background: rgba(255,255,255,0.1);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+box-shadow: 0 8px 32px rgba(0,0,0,.3);
+color: white;
+text-align: center;
+}
+
+/* TITLE */
+.weather-card h1 {
+font-size: clamp(1.4rem, 2vw, 2rem);
+margin-bottom: 20px;
+}
+
+/* SEARCH BOX */
+.search-box {
+display: flex;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+/* INPUT */
+input {
+flex: 1;
+min-width: 0;
+padding: 12px;
+border: none;
+border-radius: 10px;
+outline: none;
+font-size: 1rem;
+}
+
+/* BUTTON */
+button {
+padding: 12px 18px;
+border: none;
+border-radius: 10px;
+background: #00e5ff;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s ease;
+white-space: nowrap;
+}
+
+button:hover {
+background: #00bcd4;
+transform: translateY(-2px);
+}
+
+/* =========================
+RESPONSIVE BREAKPOINTS
+========================= */
+
+/* TABLET */
+@media (max-width: 768px) {
+
+.weather-card {
+padding: 25px;
+}
+
+.search-box {
+flex-direction: column;
+}
+
+button {
+width: 100%;
+}
+
+input {
+width: 100%;
+}
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+
+body {
+padding: 12px;
+}
+
+.weather-card {
+padding: 18px;
+border-radius: 18px;
+}
+
+.weather-card h1 {
+font-size: 1.3rem;
+}
+
+button {
+padding: 10px;
+font-size: 0.95rem;
+}
+}
+
+/* SMALL DEVICES */
+@media (max-width: 320px) {
+.weather-card {
+padding: 15px;
+}
+
+button, input {
+font-size: 0.9rem;
+}
+}
