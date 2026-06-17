@@ -1,31 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weather Dashboard</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Expense Tracker Pro Max</title>
+
+<link rel="stylesheet" href="style.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
 <div class="container">
 
-    <div class="weather-card">
+  <!-- HEADER -->
+  <header>
+    <h1>💳 Finance Dashboard</h1>
+    <p>Manage your money like a pro</p>
+  </header>
 
-        <h1>🌤 Weather Dashboard</h1>
+  <!-- STATS -->
+  <div class="stats">
 
-        <div class="search-box">
-            <input type="text" id="city" placeholder="Enter city name">
-            <button onclick="getWeather()">Search</button>
-        </div>
-
-        <div id="loading" class="hidden">
-            Loading...
-        </div>
-
-        <div id="weather"></div>
-
+    <div class="card income">
+      <h3>Income</h3>
+      <p id="income">₹0</p>
     </div>
+
+    <div class="card expense">
+      <h3>Expense</h3>
+      <p id="expense">₹0</p>
+    </div>
+
+    <div class="card balance">
+      <h3>Balance</h3>
+      <p id="balance">₹0</p>
+    </div>
+
+  </div>
+
+  <!-- INPUT SECTION -->
+  <div class="input-box">
+
+    <input id="desc" placeholder="Description"/>
+    <input id="amount" type="number" placeholder="Amount"/>
+
+    <select id="category">
+      <option>Food</option>
+      <option>Travel</option>
+      <option>Shopping</option>
+      <option>Salary</option>
+      <option>Other</option>
+    </select>
+
+    <select id="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+
+    <button onclick="addTransaction()">Add</button>
+
+  </div>
+
+  <!-- MAIN SECTION -->
+  <div class="main">
+
+    <!-- BIG DESCRIPTION -->
+    <div class="info">
+      <h2>📊 Financial Insights</h2>
+      <p>
+        Track your income and expenses in real time.
+        This dashboard gives you a clear overview of your financial health,
+        spending habits, and savings progress.
+      </p>
+
+      <ul>
+        <li>✔ Real-time tracking</li>
+        <li>✔ Category-based analysis</li>
+        <li>✔ Clean UI dashboard</li>
+        <li>✔ Persistent storage</li>
+      </ul>
+    </div>
+
+    <!-- SMALL CHART -->
+    <div class="chart-box">
+      <canvas id="chart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- SEARCH -->
+  <input id="search" onkeyup="searchTx()" placeholder="Search transactions..."/>
+
+  <!-- TRANSACTIONS -->
+  <div id="list"></div>
 
 </div>
 
