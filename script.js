@@ -1,73 +1,99 @@
-const apiKey = "efdb3a47c9219582ce7d1a5c9b51d244";
+let transactions = JSON.parse(localStorage.getItem("tx")) || [];
 
-document.getElementById("city")
-.addEventListener("keypress", function(e){
-    if(e.key === "Enter"){
-        getWeather();
-    }
-});
+const list = document.getElementById("list");
 
-async function getWeather(){
+function addTransaction() {
 
-    const city =
-    document.getElementById("city").value.trim();
+  const desc = document.getElementById("desc").value;
+  const amount = +document.getElementById("amount").value;
+  const category = document.getElementById("category").value;
+  const type = document.getElementById("type").value;
 
-    const weatherDiv =
-    document.getElementById("weather");
+  if (!desc || !amount) return;
 
-    const loading =
-    document.getElementById("loading");
+  transactions.push({
+    id: Date.now(),
+    desc,
+    amount,
+    category,
+    type
+  });
 
-    if(city === ""){
-        weatherDiv.innerHTML =
-        "<p class='error'>Please enter a city name.</p>";
-        return;
-    }
-
-    loading.classList.remove("hidden");
-    weatherDiv.innerHTML = "";
-
-    try{
-
-        const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
-        );
-
-        const data = await response.json();
-
-        if(!response.ok){
-            weatherDiv.innerHTML =
-            "<p class='error'>City not found!</p>";
-            loading.classList.add("hidden");
-            return;
-        }
-
-        weatherDiv.innerHTML = `
-            <h2>${data.name}</h2>
-
-            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png">
-
-            <div class="data">
-
-            🌡 Temperature: ${Math.round(data.main.temp)}°C<br>
-
-            🤗 Feels Like: ${Math.round(data.main.feels_like)}°C<br>
-
-            💧 Humidity: ${data.main.humidity}%<br>
-
-            💨 Wind Speed: ${data.wind.speed} m/s<br>
-
-            ☁ Condition: ${data.weather[0].description}
-
-            </div>
-        `;
-
-    }catch(error){
-
-        weatherDiv.innerHTML =
-        "<p class='error'>Something went wrong.</p>";
-
-    }
-
-    loading.classList.add("hidden");
+  save();
+  render();
 }
+
+function deleteTx(id) {
+  transactions = transactions.filter(t => t.id !== id);
+  save();
+  render();
+}
+
+function save() {
+  localStorage.setItem("tx", JSON.stringify(transactions));
+}
+
+function render() {
+
+  list.innerHTML = "";
+
+  let income = 0;
+  let expense = 0;
+
+  transactions.forEach(t => {
+
+    if (t.type === "income") income += t.amount;
+    else expense += t.amount;
+
+    const div = document.createElement("div");
+    div.className = "tx";
+
+    div.innerHTML = `
+      <div>
+        <b>${t.desc}</b> (${t.category})<br/>
+        ₹${t.amount}
+      </div>
+      <button class="delete" onclick="deleteTx(${t.id})">X</button>
+    `;
+
+    list.appendChild(div);
+  });
+
+  document.getElementById("income").innerText = `₹${income}`;
+  document.getElementById("expense").innerText = `₹${expense}`;
+  document.getElementById("balance").innerText = `₹${income - expense}`;
+
+  updateChart(income, expense);
+}
+
+function searchTx() {
+  let value = document.getElementById("search").value.toLowerCase();
+
+  document.querySelectorAll(".tx").forEach(tx => {
+    tx.style.display = tx.innerText.toLowerCase().includes(value)
+      ? "flex"
+      : "none";
+  });
+}
+
+let chart;
+
+function updateChart(income, expense) {
+
+  const ctx = document.getElementById("chart").getContext("2d");
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Income", "Expense"],
+      datasets: [{
+        data: [income, expense],
+        backgroundColor: ["#22c55e", "#ef4444"]
+      }]
+    }
+  });
+}
+
+render();
