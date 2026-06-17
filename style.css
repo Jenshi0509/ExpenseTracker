@@ -42,8 +42,8 @@ header {
 .input-box {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin: 20px 0;
+  gap: 7px;
+  margin: 10px 0;
 }
 
 /* INPUT FIELDS */
